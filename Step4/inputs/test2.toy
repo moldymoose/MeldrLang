@@ -1,0 +1,21 @@
+SCENE my_scene
+BEGIN
+    OBJECT testBall
+    (
+        MODEL = SPHERE,
+        LOCATION = (1, 1, 1),
+        DYNAMIC = TRUE,
+        COLOR = 
+        {
+            RED: 5%, BLUE: 10%, GREEN: 90%
+        }
+    )
+    
+    OBJECT my_cube()
+
+    OBJECT errorObj(
+        MODEL = SQUARE,
+        MODEL = SPHERE,
+        LOCATION = (1,2,1)
+    )
+END
