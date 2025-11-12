@@ -4,7 +4,11 @@ import java.util.*;
 
 public class PythonBuilder extends MeldrLangBaseListener
 {
-    public String sceneName = "";
+    public String getSceneName() {
+        return sceneName;
+    }
+
+    private String sceneName = "";
     private ArrayList<BlenderObject> objects = new ArrayList<>();
     private Stack<BlenderObject> currentObj = new Stack<>();
     private String semanticError = "";

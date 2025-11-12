@@ -1,6 +1,7 @@
 plugins {
     id 'java'
     id 'antlr'
+    id 'application'
 }
 
 group = 'org.meldr.compiler'
@@ -8,6 +9,10 @@ version = '1.0-SNAPSHOT'
 
 repositories {
     mavenCentral()
+}
+
+application {
+    mainClass = 'org.meldr.compiler.Driver'
 }
 
 dependencies {
