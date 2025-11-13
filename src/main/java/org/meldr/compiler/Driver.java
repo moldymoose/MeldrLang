@@ -25,18 +25,18 @@ public class Driver
         }
 
 		// create a CharStream that reads from standard input
-		ANTLRInputStream input = new ANTLRInputStream(in);
+		CharStream input = CharStreams.fromStream(in);
 
 		// create a lexer that feeds off of input CharStream
 		MeldrLangLexer lexer = new MeldrLangLexer(input);
 
 		// create a buffer of tokens pulled from the lexer
 		CommonTokenStream tokens = new CommonTokenStream(lexer);
-		
+
 		// create a parser that feeds off the tokens buffer
 		MeldrLangParser parser = new MeldrLangParser(tokens);
         parser.removeErrorListeners();
-		BaseErrorListener errListener = new BaseErrorListener() 
+		BaseErrorListener errListener = new BaseErrorListener()
 		{
 
 			@Override
