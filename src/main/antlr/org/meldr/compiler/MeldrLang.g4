@@ -19,16 +19,23 @@ dynamic_decl: DYNAMIC '=' booleanValue;
 size_decl: SIZE '=' number;
 
 // accepted format coud be as simple as (1,2,-3) or (X=1,Y=2,Z=-3)
-vector: '(' X_DEC? number ',' Y_DEC? number ',' Z_DEC? number ')';
+vector: '(' x_number ',' y_number ',' z_number ')';
 
 // color can be specified with hex color or text identifier
 colorValue: hexColor | rgb | IDENTIFIER;
 hexColor: '#' HEXVALUE;
-rgb: '(' R_DEC? percent ',' G_DEC? percent ',' B_DEC? percent ')';
+rgb: '(' r_percent ',' g_percent ',' b_percent ')';
 
 booleanValue: TRUE | FALSE;
 
+x_number: X_DEC? number;
+y_number: Y_DEC? number;
+z_number: Z_DEC? number;
 number: INT | FLOAT;
+
+r_percent: R_DEC? percent;
+g_percent: G_DEC? percent;
+b_percent: B_DEC? percent;
 percent: (INT | FLOAT) '%'?;
 
 //Lexer Rules:

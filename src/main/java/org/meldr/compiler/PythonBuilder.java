@@ -10,7 +10,7 @@ public class PythonBuilder extends MeldrLangBaseListener
     private String semanticError = "";
 
     // Set will contain objects properties for identifying duplicates
-    private Set<String> currentProperties;
+    private Map<String, String> currentProperties;
 
     public String getSceneName() {
         return sceneName;
@@ -27,7 +27,7 @@ public class PythonBuilder extends MeldrLangBaseListener
     public void enterObj_decl(MeldrLangParser.Obj_declContext ctx)
     {
         currentObject = new BlenderObject(ctx.IDENTIFIER().getText());
-        currentProperties = new HashSet<>();
+        currentProperties = new HashMap<>();
     }
 
     @Override
@@ -41,12 +41,13 @@ public class PythonBuilder extends MeldrLangBaseListener
 
     @Override
     public void enterObjectProperty(MeldrLangParser.ObjectPropertyContext ctx) {
-        String propName = ctx.getChild(0).getChild(0).getText();
+        String propName = ctx.getChild(0).getChild(0).getText().toUpperCase();
 
-        if (currentProperties.contains(propName)) {
-            semanticError += "ERROR [LINE " +  ctx.start.getLine() +  "]: Cannot define " + propName + " multiple times!\n";
+        if (currentProperties.get(propName) == null) {
+            // add property with null value for now
+            currentProperties.put(propName, null);
         } else {
-            currentProperties.add(propName);
+            semanticError += "ERROR [LINE " +  ctx.start.getLine() +  "]: Cannot define " + propName + " multiple times!\n";
         }
     }
 
@@ -54,61 +55,90 @@ public class PythonBuilder extends MeldrLangBaseListener
     public void enterModel_decl(MeldrLangParser.Model_declContext ctx) 
     {
         String modelType = ctx.IDENTIFIER().getText();
-        currentObject.setModelType(modelType);
+        if(PropertyTypes.modelTypeExists(modelType)) {
+            currentObject.setModelType(modelType);
+        }
+
     }
 
     @Override
-    public void enterColor_decl(MeldrLangParser.Color_declContext ctx)
-    {
+    public void enterColorValue(MeldrLangParser.ColorValueContext ctx) {
 
+        String rColor, gColor, bColor;
+        if(ctx.getChild(0) instanceof MeldrLangParser.RgbContext) {
+            rColor = ctx.rgb().r_percent().percent().getText();
+            gColor = ctx.rgb().g_percent().percent().getText();
+            bColor = ctx.rgb().b_percent().percent().getText();
+
+            rColor = String.valueOf(Double.parseDouble(rColor) / 100);
+            gColor = String.valueOf(Double.parseDouble(gColor) / 100);
+            bColor = String.valueOf(Double.parseDouble(bColor) / 100);
+
+            currentObject.setModelColor('(' + rColor + ',' + gColor + ',' + bColor + ", 1.0)");
+        } else if (ctx.getChild(0) instanceof MeldrLangParser.HexColorContext) {
+            String hex = ctx.hexColor().HEXVALUE().getText();
+
+            // Parse R, G, B components from hex
+            int r = Integer.parseInt(hex.substring(0, 2), 16);
+            int g = Integer.parseInt(hex.substring(2, 4), 16);
+            int b = Integer.parseInt(hex.substring(4, 6), 16);
+
+            // Convert to 0.0 - 1.0 floats and format as strings
+            rColor = String.format("%.4f", r / 255.0f);
+            gColor = String.format("%.4f", g / 255.0f);
+            bColor = String.format("%.4f", b / 255.0f);
+
+            currentObject.setModelColor('(' + rColor + ',' + gColor + ',' + bColor + ", 1.0)");
+        } else {
+            String identifier = ctx.IDENTIFIER().getText();
+            if (PropertyTypes.colorTypeExists(identifier)) {
+                currentObject.setModelColor(PropertyTypes.getColorFromType(identifier));
+            } else {
+                semanticError += "ERROR [LINE " +  ctx.start.getLine() +  "]: " + identifier + " is not a valid color!\n";
+            }
+        }
     }
 
     @Override
     public void enterLocation_decl(MeldrLangParser.Location_declContext ctx) 
-    { 
-        //int x = Integer.parseInt(ctx.X.getText());
-        //int y = Integer.parseInt(ctx.Y.getText());
-        //int z = Integer.parseInt(ctx.Z.getText());
-        //currentObject.setCoordinates(x, y, z);
+    {
+        String xVal = ctx.vector().x_number().number().getChild(0).getText();
+        String yVal = ctx.vector().y_number().number().getChild(0).getText();
+        String zVal = ctx.vector().z_number().number().getChild(0).getText();
+
+        currentObject.setLocation("(" + xVal + ", " + yVal + ", " + zVal + ")");
     }
 
     @Override
     public void enterDynamic_decl(MeldrLangParser.Dynamic_declContext ctx) 
-    { 
-        //currentObject.setDynamicPhysics(Boolean.parseBoolean(choice.toLowerCase()));
+    {
+        String choice = ctx.booleanValue().getChild(0).getText();
+        currentObject.setDynamicPhysics(Boolean.parseBoolean(choice.toLowerCase()));
     }
 
     public String printOutput()
     {
-        String code = "";
+        StringBuilder code = new StringBuilder();
         if(semanticError.isEmpty())
         {
-            code +=
-                "import bpy\n" +
-                "bpy.ops.object.select_all(action=\'SELECT\')\n" +
-                "bpy.ops.object.delete()\n" +
-                "# Ground plane\n" +
-                "bpy.ops.mesh.primitive_plane_add(size=50, location=(0, 0, 0))\n" +
-                "ground = bpy.context.active_object\n" +
-                "ground.name = \"Ground\"\n" +
-                "# Material for ground\n" +
-                "mat_ground = bpy.data.materials.new(name=\"mat_Ground\")\n" +
-                "mat_ground.diffuse_color = (1.0, 1.0, 1.0, 1.0)\n" +
-                "ground.data.materials.append(mat_ground)\n" +
-                "# Make ground static rigidbody\n" +
-                "bpy.context.view_layer.objects.active = ground\n" +
-                "bpy.ops.rigidbody.object_add()\n" +
-                "ground.rigid_body.type = \'PASSIVE\'\n" +
-                "ground.rigid_body.restitution = 0.5\n";
+            code.append("""
+                    import bpy
+                    import os
+                    
+                    current_dir = os.path.dirname(bpy.data.filepath)
+                    asset_file_path = os.path.join(current_dir, "blenderAssets", "objects.blend")
+                    directory = os.path.join(asset_file_path, "Object") + "/"
+                    
+                    """);
             for(BlenderObject obj : objects)
             {
-                code += obj.getPythonCode() + "\n";
+                code.append(obj.getPythonCode()).append("\n");
             }
         } else
         {
             System.err.println(semanticError);
         }
-        return code;
+        return code.toString();
     }
 }
 

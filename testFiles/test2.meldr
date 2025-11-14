@@ -1,9 +1,9 @@
-SCENE newScene
+SCENE newScenenewSyntax
     OBJECT testBall
         MODEL = SPHERE
         LOCATION = (-1, 1, 1)
         DYNAMIC = TRUE
-        COLOR = red
+        COLOR = (R:01.1, 92.1, 15)
     END OBJECT
     OBJECT my_cube
         MODEL = CUBE
@@ -12,10 +12,8 @@ SCENE newScene
         DYNAMIC=FALSE
     END OBJECT
     OBJECT rockm
-        MODEL = ROBOT
+        MODEL = bounce_Pad
         LOCATION = (4, 2, 1)
-        MODEL = BALL
-        SIZE = 2
         COLOR = purple
     END OBJECT
 END SCENE
