@@ -4,29 +4,59 @@ grammar MeldrLang; //similar to Little Grammar!
 package org.meldr.compiler;
 }
 
-//Parser Rules:
-scene: 'SCENE' id 'BEGIN' scene_bdy 'END';
-id: IDENTIFIER;
-scene_bdy: obj_decl_list | ; //empty scripts should be accepted!
-obj_decl_list: obj_decl obj_decl_list | ;
-obj_decl: 'OBJECT' id '('param_decl_list')';
-param_decl_list: param_decl param_decl_tail | ;
-param_decl: model_decl | color_decl | location_decl | dynamic_decl;
-param_decl_tail: ',' param_decl param_decl_tail | ;
-model_decl: 'MODEL' '=' model_ty;
-model_ty: MODEL_TYPE;
-color_decl: 'COLOR' '=' '{' rgb_assign ',' rgb_assign ',' rgb_assign '}';
-rgb_assign: RGB ':' (FLOATLITERAL | INTLITERAL) '%';
-location_decl: 'LOCATION' '=' '('X=INTLITERAL ',' Y=INTLITERAL ',' Z=INTLITERAL')'; //Labels are used to easily retrieve coordinate vals in vistor/listener class implementation!
-dynamic_decl: 'DYNAMIC' '=' ('TRUE' | 'FALSE');
+scene: SCENE IDENTIFIER level? obj_decl+ END SCENE;
 
+level: LEVEL INT;
+
+obj_decl: OBJECT IDENTIFIER objectProperty* END OBJECT;
+
+objectProperty: model_decl | color_decl | location_decl | dynamic_decl | size_decl;
+
+model_decl: MODEL '=' IDENTIFIER;
+color_decl: COLOR '=' colorValue;
+location_decl: LOCATION '=' vector;
+dynamic_decl: DYNAMIC '=' booleanValue;
+size_decl: SIZE '=' number;
+
+// accepted format coud be as simple as (1,2,-3) or (X=1,Y=2,Z=-3)
+vector: '(' X_DEC? number ',' Y_DEC? number ',' Z_DEC? number ')';
+
+// color can be specified with hex color or text identifier
+colorValue: hexColor | rgb | IDENTIFIER;
+hexColor: '#' HEXVALUE;
+rgb: '(' R_DEC? percent ',' G_DEC? percent ',' B_DEC? percent ')';
+
+booleanValue: TRUE | FALSE;
+
+number: INT | FLOAT;
+percent: (INT | FLOAT) '%'?;
 
 //Lexer Rules:
+SCENE: 'SCENE';
+OBJECT: 'OBJECT';
+END: 'END';
+LEVEL: 'LEVEL';
+MODEL: 'MODEL';
+LOCATION: 'LOCATION';
+COLOR: 'COLOR';
+DYNAMIC: 'DYNAMIC';
+SIZE: 'SIZE';
+TRUE: 'TRUE';
+FALSE: 'FALSE';
+
+X_DEC: ('X' | 'x') (':' | '=');
+Y_DEC: ('Y' | 'y') (':' | '=');
+Z_DEC: ('Z' | 'z') (':' | '=');
+
+R_DEC: ('R' | 'r') (':' | '=');
+G_DEC: ('G' | 'g') (':' | '=');
+B_DEC: ('B' | 'b') (':' | '=');
+
+HEXVALUE: [0-9a-fA-F] [0-9a-fA-F] [0-9a-fA-F] [0-9a-fA-F] [0-9a-fA-F] [0-9a-fA-F];
+
+IDENTIFIER: [a-zA-Z]([0-9a-zA-Z_])*;
+INT: '-'? [0-9]+;
+FLOAT: '-'? [0-9]+ '.' [0-9]+;
+
 WS : [ \t\n\r]+ -> skip;
 COMMENT: '--' ~[\r\n]* '\n' -> skip;
-PARAMETERTYPE: 'MODEL' | 'COLOR' | 'LOCATION' | 'DYNAMIC';
-RGB: 'RED' | 'GREEN' | 'BLUE';
-MODEL_TYPE: 'SPHERE' | 'CUBE';
-INTLITERAL : '-'?[0-9]+;
-FLOATLITERAL: [0-9]*'.'[0-9]+;
-IDENTIFIER: [a-zA-Z]([0-9a-zA-Z_])*;

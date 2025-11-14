@@ -38,7 +38,6 @@ public class Driver
         parser.removeErrorListeners();
 		BaseErrorListener errListener = new BaseErrorListener()
 		{
-
 			@Override
 			public void syntaxError(Recognizer<?, ?> recognizer, Object offendingSymbol, int line, int charPositionInLine, String msg, RecognitionException e)
 			{
@@ -46,6 +45,7 @@ public class Driver
 				System.out.println("Syntax error occurred at Line: " + line + "." + " ( " + msg + " )");
 			}
 		};
+
 		parser.addErrorListener(errListener);
 		ParseTree tree = parser.scene(); // begin parsing at scene rule
 		if(!isSyntaxError) //throws exceptions if there's syntax errors in our code

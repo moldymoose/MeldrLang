@@ -1,0 +1,21 @@
+SCENE newScene
+    OBJECT testBall
+        MODEL = SPHERE
+        LOCATION = (-1, 1, 1)
+        DYNAMIC = TRUE
+        COLOR = red
+    END OBJECT
+    OBJECT my_cube
+        MODEL = CUBE
+        LOCATION = (1, 5, 1)
+        COLOR = #ff00ff
+        DYNAMIC=FALSE
+    END OBJECT
+    OBJECT rockm
+        MODEL = ROBOT
+        LOCATION = (4, 2, 1)
+        MODEL = BALL
+        SIZE = 2
+        COLOR = purple
+    END OBJECT
+END SCENE
