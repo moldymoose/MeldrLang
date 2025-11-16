@@ -138,7 +138,7 @@ public class PythonBuilder extends MeldrLangBaseListener
                         "asset_directory = os.path.join(asset_file_path, \"Object\") + \"/\"\n" +
                         "\n" +
                         "level_file_path = os.path.join(current_dir, \"blenderAssets\", \"levels.blend\")\n" +
-                        "level_directory = os.path.join(asset_file_path, \"Collection\") + \"/\"\n" +
+                        "level_directory = os.path.join(level_file_path, \"Collection\") + \"/\"\n" +
                         "\n" +
                         // Delete all objects from scene and clear unused nodes
                         "bpy.ops.object.select_all(action='SELECT')\n" +
@@ -158,6 +158,14 @@ public class PythonBuilder extends MeldrLangBaseListener
                         "        if datablock.users == 0:\n" +
                         "            block.remove(datablock)\n" +
                         "\n" +
+                        "def delete_empty_collections():\n" +
+                        "    # Make a list first to avoid modifying the collection while iterating\n" +
+                        "    empty_collections = [col for col in bpy.data.collections if len(col.objects) == 0 and len(col.children) == 0]\n" +
+                        "\n" +
+                        "    for col in empty_collections:\n" +
+                        "        bpy.data.collections.remove(col)\n" +
+                        "\n" +
+                        "delete_empty_collections()\n" +
                         "collection_name = \"%d\"\n" +
                         "\n" +
                         "bpy.ops.wm.append(\n" +
@@ -165,13 +173,16 @@ public class PythonBuilder extends MeldrLangBaseListener
                         "    directory=level_directory,\n" +
                         "    filename=collection_name\n" +
                         ")\n" +
-                        "\n"
+                        "bpy.context.scene.frame_set(0)\n"
                         , level)
             );
             for(BlenderObject obj : objects)
             {
                 code.append(obj.getPythonCode()).append("\n");
             }
+            code.append(
+                   "bpy.ops.screen.animation_play()\n"
+            );
         } else
         {
             System.err.println(semanticError);
