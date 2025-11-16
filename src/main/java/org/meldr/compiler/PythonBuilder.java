@@ -10,7 +10,10 @@ public class PythonBuilder extends MeldrLangBaseListener
     private String semanticError = "";
 
     // Set will contain objects properties for identifying duplicates
-    private Map<String, String> currentProperties;
+    private Set<String> currentProperties;
+
+    // Scene will default to white plane
+    private int level = 0;
 
     public String getSceneName() {
         return sceneName;
@@ -27,7 +30,7 @@ public class PythonBuilder extends MeldrLangBaseListener
     public void enterObj_decl(MeldrLangParser.Obj_declContext ctx)
     {
         currentObject = new BlenderObject(ctx.IDENTIFIER().getText());
-        currentProperties = new HashMap<>();
+        currentProperties = new HashSet<>();
     }
 
     @Override
@@ -43,9 +46,9 @@ public class PythonBuilder extends MeldrLangBaseListener
     public void enterObjectProperty(MeldrLangParser.ObjectPropertyContext ctx) {
         String propName = ctx.getChild(0).getChild(0).getText().toUpperCase();
 
-        if (currentProperties.get(propName) == null) {
+        if (!currentProperties.contains(propName)) {
             // add property with null value for now
-            currentProperties.put(propName, null);
+            currentProperties.add(propName);
         } else {
             semanticError += "ERROR [LINE " +  ctx.start.getLine() +  "]: Cannot define " + propName + " multiple times!\n";
         }
@@ -116,20 +119,55 @@ public class PythonBuilder extends MeldrLangBaseListener
         currentObject.setDynamicPhysics(Boolean.parseBoolean(choice.toLowerCase()));
     }
 
+    @Override
+    public void enterLevel(MeldrLangParser.LevelContext ctx) {
+        this.level = Integer.parseInt(ctx.INT().getText());
+    }
+
     public String printOutput()
     {
         StringBuilder code = new StringBuilder();
         if(semanticError.isEmpty())
         {
-            code.append("""
-                    import bpy
-                    import os
-                    
-                    current_dir = os.path.dirname(bpy.data.filepath)
-                    asset_file_path = os.path.join(current_dir, "blenderAssets", "objects.blend")
-                    directory = os.path.join(asset_file_path, "Object") + "/"
-                    
-                    """);
+            code.append(String.format(
+                        "import bpy\n" +
+                        "import os\n" +
+                        "\n" +
+                        "current_dir = os.path.dirname(bpy.data.filepath)\n" +
+                        "asset_file_path = os.path.join(current_dir, \"blenderAssets\", \"objects.blend\")\n" +
+                        "asset_directory = os.path.join(asset_file_path, \"Object\") + \"/\"\n" +
+                        "\n" +
+                        "level_file_path = os.path.join(current_dir, \"blenderAssets\", \"levels.blend\")\n" +
+                        "level_directory = os.path.join(asset_file_path, \"Collection\") + \"/\"\n" +
+                        "\n" +
+                        // Delete all objects from scene and clear unused nodes
+                        "bpy.ops.object.select_all(action='SELECT')\n" +
+                        "bpy.ops.object.delete(use_global=False)\n" +
+                        "\n" +
+                        "for block in (\n" +
+                        "    bpy.data.meshes,\n" +
+                        "    bpy.data.materials,\n" +
+                        "    bpy.data.textures,\n" +
+                        "    bpy.data.images,\n" +
+                        "    bpy.data.node_groups,\n" +
+                        "    bpy.data.curves,\n" +
+                        "    bpy.data.cameras,\n" +
+                        "    bpy.data.lights,\n" +
+                        "):\n" +
+                        "    for datablock in block:\n" +
+                        "        if datablock.users == 0:\n" +
+                        "            block.remove(datablock)\n" +
+                        "\n" +
+                        "collection_name = \"%d\"\n" +
+                        "\n" +
+                        "bpy.ops.wm.append(\n" +
+                        "    filepath=os.path.join(level_directory, collection_name),\n" +
+                        "    directory=level_directory,\n" +
+                        "    filename=collection_name\n" +
+                        ")\n" +
+                        "\n"
+                        , level)
+            );
             for(BlenderObject obj : objects)
             {
                 code.append(obj.getPythonCode()).append("\n");

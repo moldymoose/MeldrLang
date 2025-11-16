@@ -9,6 +9,7 @@ import java.io.InputStream;
 import java.io.PrintWriter;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 //YOU ARE NOT REQUIRED TO MODIFY THIS CLASS
 
 public class Driver 
@@ -42,7 +43,7 @@ public class Driver
 			public void syntaxError(Recognizer<?, ?> recognizer, Object offendingSymbol, int line, int charPositionInLine, String msg, RecognitionException e)
 			{
 				isSyntaxError = true;
-				System.out.println("Syntax error occurred at Line: " + line + "." + " ( " + msg + " )");
+				System.err.println("Syntax error occurred at Line: " + line + "." + " ( " + msg + " )");
 			}
 		};
 
@@ -60,7 +61,7 @@ public class Driver
 			walker.walk(stb, tree);
 
             String filename = stb.getSceneName() + ".py";
-            Path outputPath = Path.of("output/" + filename);
+            Path outputPath = Paths.get("output/" + filename);
 
             Files.createDirectories(outputPath.getParent());
 

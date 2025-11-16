@@ -1,9 +1,15 @@
-SCENE newTest3
+SCENE golfScene
+LEVEL 1
     OBJECT testBall
         MODEL = SPHERE
         LOCATION = (-1, 1, 1)
         DYNAMIC = TRUE
         COLOR = (R:01.1, 92.1, 15)
+    END OBJECT
+    OBJECT tube
+        MODEL = Cylinder
+        LOCATION = (4, 2, 20)
+        COLOR = forestgreen
     END OBJECT
     OBJECT my_cube
         MODEL = CUBE
@@ -11,8 +17,9 @@ SCENE newTest3
         COLOR = #ff00ff
         DYNAMIC=FALSE
     END OBJECT
-    OBJECT rockm
-        MODEL = bounce_Pad
+    OBJECT monkey
+        MODEL = monkey
         LOCATION = (4, 2, 1)
+        COLOR = gold
     END OBJECT
 END SCENE

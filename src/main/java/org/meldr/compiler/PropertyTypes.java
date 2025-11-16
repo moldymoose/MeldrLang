@@ -14,6 +14,10 @@ public class PropertyTypes {
         modelTypes.add("BALL");
         modelTypes.add("CUBE");
         modelTypes.add("BOUNCE_PAD");
+        modelTypes.add("ROCKET");
+        modelTypes.add("GOLF_BALL");
+        modelTypes.add("MONKEY");
+        modelTypes.add("CYLINDER");
 
         // Default Colors
         colorTypes.put("BLACK", "(0.0, 0.0, 0.0, 1.0)");
