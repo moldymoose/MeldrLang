@@ -120,6 +120,11 @@ public class PythonBuilder extends MeldrLangBaseListener
     }
 
     @Override
+    public void enterSize_decl(MeldrLangParser.Size_declContext ctx) {
+        currentObject.setSize(ctx.number().getChild(0).getText());
+    }
+
+    @Override
     public void enterLevel(MeldrLangParser.LevelContext ctx) {
         this.level = Integer.parseInt(ctx.INT().getText());
     }

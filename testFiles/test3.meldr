@@ -21,5 +21,11 @@ LEVEL 1
         MODEL = monkey
         LOCATION = (4, 2, 1)
         COLOR = gold
+        SIZE = 5
+    END OBJECT
+    OBJECT monke2
+        MODEL = monkey
+        LOCATION = (4, 2, 8)
+        COLOR = red
     END OBJECT
 END SCENE

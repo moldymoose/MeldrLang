@@ -6,6 +6,7 @@ public class BlenderObject
     private String location = "(0, 0, 0)";
     private String modelType = "EMPTY";
     private String modelColor = "(1.0, 1.0, 1.0, 0.0)";
+    private String size = "1.0";
     private boolean dynamicPhysicsEnabled = false;
     private final String name;
 
@@ -59,6 +60,7 @@ public class BlenderObject
             "obj = bpy.context.selected_objects[0]\n" +
             "obj.name = \"%s\"\n" +
             "obj.location = %s\n" +
+            "obj.scale *= %s\n" +
             "\n" +
             "mat = obj.data.materials[0]\n" +
             "new_mat = mat.copy()\n" +
@@ -84,7 +86,7 @@ public class BlenderObject
             "    links.new(old_color_output, mix.inputs[1])\n" +
             "\n" +
             "links.new(mix.outputs[0], bsdf.inputs[\"Base Color\"])\n",
-            this.modelType, this.name, this.location, this.modelColor
+            this.modelType, this.name, this.location, this.size, this.modelColor
         );
 
         if(!dynamicPhysicsEnabled)
@@ -93,5 +95,9 @@ public class BlenderObject
         }
 
         return code;
+    }
+
+    public void setSize(String size) {
+        this.size = size;
     }
 }
