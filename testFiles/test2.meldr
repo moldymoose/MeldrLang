@@ -1,0 +1,18 @@
+SCENE newTest3
+    OBJECT testBall
+        MODEL = SPHERE
+        LOCATION = (-1, 1, 1)
+        DYNAMIC = TRUE
+        COLOR = (R:01.1, 92.1, 15)
+    END OBJECT
+    OBJECT my_cube
+        MODEL = CUBE
+        LOCATION = (1, 5, 1)
+        COLOR = #ff00ff
+        DYNAMIC=FALSE
+    END OBJECT
+    OBJECT rockm
+        MODEL = bounce_Pad
+        LOCATION = (4, 2, 1)
+    END OBJECT
+END SCENE

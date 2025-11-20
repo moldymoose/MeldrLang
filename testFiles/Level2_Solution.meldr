@@ -1,0 +1,15 @@
+SCENE Level2_Solution
+LEVEL 2
+    OBJECT red_ball
+        MODEL = ball
+        COLOR = red
+        LOCATION = (21, -12, 35)
+        DYNAMIC = TRUE
+    END OBJECT
+    OBJECT blue_ball
+        MODEL = ball
+        COLOR = blue
+        LOCATION = (18, -11, 50)
+        DYNAMIC = TRUE
+    END OBJECT
+END SCENE

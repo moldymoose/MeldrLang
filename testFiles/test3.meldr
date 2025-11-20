@@ -1,0 +1,31 @@
+SCENE golfScene
+LEVEL 1
+    OBJECT testBall
+        MODEL = SPHERE
+        LOCATION = (-1, 1, 1)
+        DYNAMIC = TRUE
+        COLOR = (R:01.1, 92.1, 15)
+    END OBJECT
+    OBJECT tube
+        MODEL = Cylinder
+        LOCATION = (4, 2, 20)
+        COLOR = forestgreen
+    END OBJECT
+    OBJECT my_cube
+        MODEL = CUBE
+        LOCATION = (1, 5, 1)
+        COLOR = #ff00ff
+        DYNAMIC=FALSE
+    END OBJECT
+    OBJECT monkey
+        MODEL = monkey
+        LOCATION = (4, 2, 1)
+        COLOR = gold
+        SIZE = 5
+    END OBJECT
+    OBJECT monke2
+        MODEL = monkey
+        LOCATION = (4, 2, 8)
+        COLOR = red
+    END OBJECT
+END SCENE
