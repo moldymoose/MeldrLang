@@ -1,37 +1,17 @@
 plugins {
-    id 'java'
-    id 'antlr'
-    id 'application'
-    id 'com.gradleup.shadow' version '8.3.9'
+    id 'base'
 }
 
-group = 'org.meldr.compiler'
-version = '1.0-SNAPSHOT'
+tasks.register('packageAddon', Zip) {
+    group = 'build'
+    description = 'Build Blender add-on ZIP including compiler JAR'
 
-repositories {
-    mavenCentral()
-    gradlePluginPortal()
-}
+    dependsOn ':compiler:shadowJar', ':compiler:copyToAddon'
 
-java {
-    sourceCompatibility = JavaVersion.VERSION_1_8
-    targetCompatibility = JavaVersion.VERSION_1_8
-    toolchain {
-        languageVersion = JavaLanguageVersion.of(8)
+    from('addon') {
+        into 'meldr'
     }
-}
 
-application {
-    mainClass = 'org.meldr.compiler.Driver'
-}
-
-dependencies {
-    antlr ('org.antlr:antlr4:4.13.2')
-    testImplementation platform('org.junit:junit-bom:5.10.0')
-    testImplementation 'org.junit.jupiter:junit-jupiter'
-    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
-}
-
-test {
-    useJUnitPlatform()
+    archiveFileName = 'meldr-blender-addon.zip'
+    destinationDirectory = file("$buildDir/dist")
 }

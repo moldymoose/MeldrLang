@@ -1,0 +1,39 @@
+plugins {
+    id 'java'
+    id 'antlr'
+    id 'application'
+    id 'com.gradleup.shadow' version '8.3.9'
+}
+
+group = 'org.meldr.compiler'
+version = '1.0'
+
+repositories {
+    mavenCentral()
+    gradlePluginPortal()
+}
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_1_8
+    targetCompatibility = JavaVersion.VERSION_1_8
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(8)
+    }
+}
+
+application {
+    mainClass = 'org.meldr.compiler.Driver'
+}
+
+dependencies {
+    antlr ('org.antlr:antlr4:4.13.2')
+    testImplementation platform('org.junit:junit-bom:5.10.0')
+    testImplementation 'org.junit.jupiter:junit-jupiter'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+}
+
+shadowJar {
+    archiveBaseName.set("compiler")
+    archiveClassifier.set("") // removes '-all' suffix
+    mergeServiceFiles()
+}
