@@ -1,0 +1,7 @@
+SCENE Level1_Solution
+LEVEL 1
+    OBJECT golf_ball
+        MODEL = golf_ball
+        DYNAMIC = TRUE
+    END OBJECT
+END SCENE
