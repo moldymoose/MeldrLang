@@ -149,7 +149,7 @@ public class PythonBuilder extends MeldrLangBaseListener
                         "import bpy\n" +
                         "import os\n" +
                         "\n" +
-                        "addon_dir = \"%s\"\n" +
+                        "addon_dir = r\"%s\"\n" +
                         "asset_file_path = os.path.join(addon_dir, \"assets\", \"objects.blend\")\n" +
                         "asset_directory = os.path.join(asset_file_path, \"Object\") + \"/\"\n" +
                         "\n" +

@@ -14,6 +14,8 @@ import os
 import glob
 import shutil
 
+
+
 class ML_OT_RunMeldrLang(bpy.types.Operator):
     bl_idname = "ml.run_meldrlang"
     bl_label = "Run MeldrLang"
@@ -107,13 +109,52 @@ class ML_PT_MeldrLangPanel(bpy.types.Panel):
     def draw(self, context):
         self.layout.operator("ml.run_meldrlang", icon="FILE_SCRIPT")
 
+class ML_OT_ImportWorkspace(bpy.types.Operator):
+    bl_idname = "ml.import_workspace"
+    bl_label = "Import Meldr Workspace"
+    bl_description = "Imports and activates the Meldr workspace in the current file"
 
-classes = [ML_OT_RunMeldrLang, ML_PT_MeldrLangPanel]
+    def execute(self, context):
+        addon_dir = os.path.dirname(__file__)
+        workspace_file = os.path.join(addon_dir, "assets", "workspace.blend")
+        workspace_name = "MELDR"
+
+        if not os.path.exists(workspace_file):
+            self.report({'ERROR'}, f"Workspace file not found:\n{workspace_file}")
+            return {'CANCELLED'}
+
+        try:
+            bpy.ops.workspace.append_activate(
+                filepath=workspace_file,
+                idname=workspace_name
+            )
+            self.report({'INFO'}, f"Workspace '{workspace_name}' imported and activated.")
+            return {'FINISHED'}
+        except Exception as e:
+            self.report({'ERROR'}, f"Failed to import workspace:\n{e}")
+            return {'CANCELLED'}
+
+class ML_PT_WorkspacePanel(bpy.types.Panel):
+    bl_label = "Meldr Workspace"
+    bl_space_type = 'TEXT_EDITOR'   # Could also use 'VIEW_3D'
+    bl_region_type = 'UI'
+    bl_category = "MeldrLang"
+
+    def draw(self, context):
+        layout = self.layout
+        layout.operator("ml.import_workspace", icon="FILE_BLEND")
+
+classes = [
+    ML_OT_RunMeldrLang,
+    ML_PT_MeldrLangPanel,
+    ML_OT_ImportWorkspace,
+    ML_PT_WorkspacePanel
+]
+
 
 def register():
     for cls in classes:
         bpy.utils.register_class(cls)
-
 
 def unregister():
     for cls in reversed(classes):
