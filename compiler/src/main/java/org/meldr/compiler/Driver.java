@@ -67,6 +67,7 @@ public class Driver
 
             try (PrintWriter out = new PrintWriter(outputPath.toFile())) {
                 out.println(stb.printOutput());
+                System.out.println(filename);
             }
 		}
 	}

@@ -1,5 +1,7 @@
 package org.meldr.compiler;
 
+import java.io.File;
+import java.net.URISyntaxException;
 import java.util.*;
 
 public class PythonBuilder extends MeldrLangBaseListener
@@ -129,20 +131,29 @@ public class PythonBuilder extends MeldrLangBaseListener
         this.level = Integer.parseInt(ctx.INT().getText());
     }
 
-    public String printOutput()
-    {
+    public String printOutput() throws URISyntaxException {
         StringBuilder code = new StringBuilder();
         if(semanticError.isEmpty())
         {
+            // Get path to the running JAR file
+            File jarFile = new File(Driver.class.getProtectionDomain()
+                    .getCodeSource()
+                    .getLocation()
+                    .toURI());
+
+            // If running from a JAR, jarFile is the path to the JAR
+            // Get its parent directory
+            String jarDir = jarFile.getParent();
+
             code.append(String.format(
                         "import bpy\n" +
                         "import os\n" +
                         "\n" +
-                        "current_dir = os.path.dirname(bpy.data.filepath)\n" +
-                        "asset_file_path = os.path.join(current_dir, \"blenderAssets\", \"objects.blend\")\n" +
+                        "addon_dir = \"%s\"\n" +
+                        "asset_file_path = os.path.join(addon_dir, \"assets\", \"objects.blend\")\n" +
                         "asset_directory = os.path.join(asset_file_path, \"Object\") + \"/\"\n" +
                         "\n" +
-                        "level_file_path = os.path.join(current_dir, \"blenderAssets\", \"levels.blend\")\n" +
+                        "level_file_path = os.path.join(addon_dir, \"assets\", \"levels.blend\")\n" +
                         "level_directory = os.path.join(level_file_path, \"Collection\") + \"/\"\n" +
                         "\n" +
                         // Delete all objects from scene and clear unused nodes
@@ -178,8 +189,10 @@ public class PythonBuilder extends MeldrLangBaseListener
                         "    directory=level_directory,\n" +
                         "    filename=collection_name\n" +
                         ")\n" +
+                        "bpy.context.scene.frame_end = 500\n" +
+                        "bpy.context.scene.rigidbody_world.point_cache.frame_end = 500\n" +
                         "bpy.context.scene.frame_set(0)\n"
-                        , level)
+                        ,jarDir, level)
             );
             for(BlenderObject obj : objects)
             {
