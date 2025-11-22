@@ -1,10 +1,10 @@
 bl_info = {
     "name": "MeldrLang Runner",
     "author": "Antonio and Phil",
-    "version": (1, 4),
+    "version": (1, 5, 0),
     "blender": (2, 80, 0),
     "location": "Text Editor > Sidebar",
-    "description": "Runs MeldrLang JAR next to .blend file and executes generated Python",
+    "description": "Runs MeldrLang compiler on contents of text editor executes generated Python",
     "category": "Development"
 }
 
