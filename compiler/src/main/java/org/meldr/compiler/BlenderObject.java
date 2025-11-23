@@ -71,12 +71,16 @@ public class BlenderObject
             ")\n" +
             "\n" +
             "obj = bpy.context.selected_objects[0]\n" +
+            "bpy.ops.object.empty_add()\n" +
+            "parent = bpy.context.selected_objects[0]\n" +
             "obj.name = \"%s\"\n" +
-            "obj.location = %s\n" +
-            "obj.scale *= %s\n" +
-            "obj.rotation_euler[0] += math.radians(%s)\n" +
-            "obj.rotation_euler[1] += math.radians(%s)\n" +
-            "obj.rotation_euler[2] += math.radians(%s)\n" +
+            "parent.name = \"%s\"\n" +
+            "obj.parent = parent\n" +
+            "parent.location = %s\n" +
+            "parent.scale *= %s\n" +
+            "parent.rotation_euler[0] += math.radians(%s)\n" +
+            "parent.rotation_euler[1] += math.radians(%s)\n" +
+            "parent.rotation_euler[2] += math.radians(%s)\n" +
             "\n" +
             "mat = obj.data.materials[0]\n" +
             "new_mat = mat.copy()\n" +
@@ -102,7 +106,7 @@ public class BlenderObject
             "    links.new(old_color_output, mix.inputs[1])\n" +
             "\n" +
             "links.new(mix.outputs[0], bsdf.inputs[\"Base Color\"])\n",
-            this.modelType, this.name, this.location, this.size, this.xRot, this.yRot, this.zRot, this.modelColor
+            this.modelType, this.name, this.name, this.location, this.size, this.xRot, this.yRot, this.zRot, this.modelColor
         );
 
         if(!dynamicPhysicsEnabled)

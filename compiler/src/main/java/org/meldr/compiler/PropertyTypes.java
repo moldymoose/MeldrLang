@@ -20,6 +20,8 @@ public class PropertyTypes {
         modelTypes.add("GOLF_BALL");
         modelTypes.add("MONKEY");
         modelTypes.add("CYLINDER");
+        modelTypes.add("GOLF_CLUB");
+        modelTypes.add("RAMP");
 
         // Default Colors
         colorTypes.put("BLACK", "(0.0, 0.0, 0.0, 1.0)");
