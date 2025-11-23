@@ -62,6 +62,8 @@ public class PythonBuilder extends MeldrLangBaseListener
         String modelType = ctx.IDENTIFIER().getText();
         if(PropertyTypes.modelTypeExists(modelType)) {
             currentObject.setModelType(modelType);
+        } else {
+            semanticError += "ERROR [LINE " +  ctx.start.getLine() +  "]: " + modelType + " is not a valid model type!\n";
         }
 
     }
@@ -139,7 +141,12 @@ public class PythonBuilder extends MeldrLangBaseListener
 
     @Override
     public void enterLevel(MeldrLangParser.LevelContext ctx) {
-        this.level = Integer.parseInt(ctx.INT().getText());
+        int level = Integer.parseInt(ctx.INT().getText());
+        if (level > PropertyTypes.MAX_LEVEL || level < PropertyTypes.MIN_LEVEL) {
+            semanticError += "ERROR [LINE " +  ctx.start.getLine() +  "]: Level must be between " + PropertyTypes.MIN_LEVEL + " and " + PropertyTypes.MAX_LEVEL + "!\n";
+        } else {
+            this.level = level;
+        }
     }
 
     public String printOutput() throws URISyntaxException {

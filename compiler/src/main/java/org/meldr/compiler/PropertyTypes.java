@@ -6,6 +6,8 @@ import java.util.Map;
 import java.util.Set;
 
 public class PropertyTypes {
+    public static final int MAX_LEVEL = 2;
+    public static final int MIN_LEVEL = 0;
     private static final Set<String> modelTypes = new HashSet<>();
     private static  final Map<String, String> colorTypes = new HashMap<>();
     static {
