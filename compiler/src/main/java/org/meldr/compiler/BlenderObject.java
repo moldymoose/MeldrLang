@@ -7,6 +7,9 @@ public class BlenderObject
     private String modelType = "EMPTY";
     private String modelColor = "(1.0, 1.0, 1.0, 0.0)";
     private String size = "1.0";
+    private String xRot = "0";
+    private String yRot = "0";
+    private String zRot = "0";
     private boolean dynamicPhysicsEnabled = false;
     private final String name;
 
@@ -29,6 +32,16 @@ public class BlenderObject
 
     public void setLocation(String location) {
         this.location = location;
+    }
+
+    public void setxRot(String xRot) {
+        this.xRot = xRot;
+    }
+    public void setyRot(String yRot) {
+        this.yRot = yRot;
+    }
+    public void setzRot(String zRot) {
+        this.zRot = zRot;
     }
 
     public void setModelType(String modelType)
@@ -61,6 +74,9 @@ public class BlenderObject
             "obj.name = \"%s\"\n" +
             "obj.location = %s\n" +
             "obj.scale *= %s\n" +
+            "obj.rotation_euler[0] += math.radians(%s)\n" +
+            "obj.rotation_euler[1] += math.radians(%s)\n" +
+            "obj.rotation_euler[2] += math.radians(%s)\n" +
             "\n" +
             "mat = obj.data.materials[0]\n" +
             "new_mat = mat.copy()\n" +
@@ -86,7 +102,7 @@ public class BlenderObject
             "    links.new(old_color_output, mix.inputs[1])\n" +
             "\n" +
             "links.new(mix.outputs[0], bsdf.inputs[\"Base Color\"])\n",
-            this.modelType, this.name, this.location, this.size, this.modelColor
+            this.modelType, this.name, this.location, this.size, this.xRot, this.yRot, this.zRot, this.modelColor
         );
 
         if(!dynamicPhysicsEnabled)

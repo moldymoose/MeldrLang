@@ -4,6 +4,8 @@ import java.io.File;
 import java.net.URISyntaxException;
 import java.util.*;
 
+import org.meldr.compiler.MeldrLangParser.Rotation_declContext;
+
 public class PythonBuilder extends MeldrLangBaseListener
 {
     private String sceneName = "";
@@ -115,6 +117,17 @@ public class PythonBuilder extends MeldrLangBaseListener
     }
 
     @Override
+    public void enterRotation_decl(Rotation_declContext ctx) {
+        if(ctx.number() != null) {
+            currentObject.setzRot(ctx.number().getChild(0).getText());
+        } else if (ctx.vector() != null) {
+            currentObject.setxRot(ctx.vector().x_number().number().getChild(0).getText());
+            currentObject.setyRot(ctx.vector().y_number().number().getChild(0).getText());
+            currentObject.setzRot(ctx.vector().z_number().number().getChild(0).getText());
+        }
+    }
+
+    @Override
     public void enterDynamic_decl(MeldrLangParser.Dynamic_declContext ctx) 
     {
         String choice = ctx.booleanValue().getChild(0).getText();
@@ -148,6 +161,7 @@ public class PythonBuilder extends MeldrLangBaseListener
             code.append(String.format(
                         "import bpy\n" +
                         "import os\n" +
+                        "import math\n" +
                         "\n" +
                         "addon_dir = r\"%s\"\n" +
                         "asset_file_path = os.path.join(addon_dir, \"assets\", \"objects.blend\")\n" +

@@ -10,13 +10,14 @@ level: LEVEL INT;
 
 obj_decl: OBJECT IDENTIFIER objectProperty* END OBJECT;
 
-objectProperty: model_decl | color_decl | location_decl | dynamic_decl | size_decl;
+objectProperty: model_decl | color_decl | location_decl | dynamic_decl | size_decl | rotation_decl;
 
 model_decl: MODEL '=' IDENTIFIER;
 color_decl: COLOR '=' colorValue;
 location_decl: LOCATION '=' vector;
 dynamic_decl: DYNAMIC '=' booleanValue;
 size_decl: SIZE '=' number;
+rotation_decl: ROTATION '=' (number | vector);
 
 // accepted format coud be as simple as (1,2,-3) or (X=1,Y=2,Z=-3)
 vector: '(' x_number ',' y_number ',' z_number ')';
@@ -45,6 +46,7 @@ END       : [Ee][Nn][Dd];
 LEVEL     : [Ll][Ee][Vv][Ee][Ll];
 MODEL     : [Mm][Oo][Dd][Ee][Ll];
 LOCATION  : [Ll][Oo][Cc][Aa][Tt][Ii][Oo][Nn];
+ROTATION  : [Rr][Oo][Tt][Aa][Tt][Ii][Oo][Nn];
 COLOR     : [Cc][Oo][Ll][Oo][Rr];
 DYNAMIC   : [Dd][Yy][Nn][Aa][Mm][Ii][Cc];
 SIZE      : [Ss][Ii][Zz][Ee];
