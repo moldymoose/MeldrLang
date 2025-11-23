@@ -1,4 +1,4 @@
-SCENE newTest3
+SCENE test2Scene
     OBJECT testBall
         MODEL = SPHERE
         LOCATION = (-1, 1, 1)
@@ -11,7 +11,7 @@ SCENE newTest3
         COLOR = #ff00ff
         DYNAMIC=FALSE
     END OBJECT
-    OBJECT rockm
+    OBJECT bounce
         MODEL = bounce_Pad
         LOCATION = (4, 2, 1)
     END OBJECT

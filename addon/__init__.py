@@ -1,6 +1,6 @@
 bl_info = {
     "name": "MeldrLang Runner",
-    "author": "Antonio and Phil",
+    "author": "Antonio Morales and Phil Wigner",
     "version": (1, 5, 0),
     "blender": (2, 80, 0),
     "location": "Text Editor > Sidebar",
@@ -16,9 +16,9 @@ import shutil
 
 
 
-class ML_OT_RunMeldrLang(bpy.types.Operator):
-    bl_idname = "ml.run_meldrlang"
-    bl_label = "Run MeldrLang"
+class ML_OT_RunMeldrScript(bpy.types.Operator):
+    bl_idname = "ml.run_meldrscript"
+    bl_label = "Run Meldr-Script"
     bl_options = {'REGISTER', 'UNDO'}
 
     def execute(self, context):
@@ -101,13 +101,13 @@ class ML_OT_RunMeldrLang(bpy.types.Operator):
 
 
 class ML_PT_MeldrLangPanel(bpy.types.Panel):
-    bl_label = "MeldrLang Runner"
+    bl_label = "Meldr-Script Compiler"
     bl_space_type = 'TEXT_EDITOR'
     bl_region_type = 'UI'
     bl_category = "MeldrLang"
 
     def draw(self, context):
-        self.layout.operator("ml.run_meldrlang", icon="FILE_SCRIPT")
+        self.layout.operator("ml.run_meldrscript", icon="FILE_SCRIPT")
 
 class ML_OT_ImportWorkspace(bpy.types.Operator):
     bl_idname = "ml.import_workspace"
@@ -145,7 +145,7 @@ class ML_PT_WorkspacePanel(bpy.types.Panel):
         layout.operator("ml.import_workspace", icon="FILE_BLEND")
 
 classes = [
-    ML_OT_RunMeldrLang,
+    ML_OT_RunMeldrScript,
     ML_PT_MeldrLangPanel,
     ML_OT_ImportWorkspace,
     ML_PT_WorkspacePanel

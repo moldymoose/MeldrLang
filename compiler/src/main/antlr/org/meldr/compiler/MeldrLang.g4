@@ -1,4 +1,4 @@
-grammar MeldrLang; //similar to Little Grammar!
+grammar MeldrLang;
 
 @header {
 package org.meldr.compiler;
