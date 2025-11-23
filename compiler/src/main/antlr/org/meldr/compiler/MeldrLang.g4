@@ -38,18 +38,19 @@ g_percent: G_DEC? percent;
 b_percent: B_DEC? percent;
 percent: (INT | FLOAT) '%'?;
 
-//Lexer Rules:
-SCENE: 'SCENE';
-OBJECT: 'OBJECT';
-END: 'END';
-LEVEL: 'LEVEL';
-MODEL: 'MODEL';
-LOCATION: 'LOCATION';
-COLOR: 'COLOR';
-DYNAMIC: 'DYNAMIC';
-SIZE: 'SIZE';
-TRUE: 'TRUE';
-FALSE: 'FALSE';
+//Lexer Rules: Keyword sensitivity removed
+SCENE     : [Ss][Cc][Ee][Nn][Ee];
+OBJECT    : [Oo][Bb][Jj][Ee][Cc][Tt];
+END       : [Ee][Nn][Dd];
+LEVEL     : [Ll][Ee][Vv][Ee][Ll];
+MODEL     : [Mm][Oo][Dd][Ee][Ll];
+LOCATION  : [Ll][Oo][Cc][Aa][Tt][Ii][Oo][Nn];
+COLOR     : [Cc][Oo][Ll][Oo][Rr];
+DYNAMIC   : [Dd][Yy][Nn][Aa][Mm][Ii][Cc];
+SIZE      : [Ss][Ii][Zz][Ee];
+TRUE      : [Tt][Rr][Uu][Ee];
+FALSE     : [Ff][Aa][Ll][Ss][Ee];
+
 
 X_DEC: ('X' | 'x') (':' | '=');
 Y_DEC: ('Y' | 'y') (':' | '=');
