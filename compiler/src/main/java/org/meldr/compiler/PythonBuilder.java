@@ -4,8 +4,6 @@ import java.io.File;
 import java.net.URISyntaxException;
 import java.util.*;
 
-import org.meldr.compiler.MeldrLangParser.Rotation_declContext;
-
 public class PythonBuilder extends MeldrLangBaseListener
 {
     private String sceneName = "";
@@ -117,7 +115,7 @@ public class PythonBuilder extends MeldrLangBaseListener
     }
 
     @Override
-    public void enterRotation_decl(Rotation_declContext ctx) {
+    public void enterRotation_decl(MeldrLangParser.Rotation_declContext ctx) {
         if(ctx.number() != null) {
             currentObject.setzRot(ctx.number().getChild(0).getText());
         } else if (ctx.vector() != null) {
