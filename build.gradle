@@ -12,6 +12,6 @@ tasks.register('packageAddon', Zip) {
         into 'meldr'
     }
 
-    archiveFileName = 'meldr-blender-addon.zip'
+    archiveFileName = "meldr-blender-addon-${project(':compiler').version}.zip"
     destinationDirectory = file("$buildDir/dist")
 }
