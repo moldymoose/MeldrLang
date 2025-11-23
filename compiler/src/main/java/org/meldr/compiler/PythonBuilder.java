@@ -38,7 +38,11 @@ public class PythonBuilder extends MeldrLangBaseListener
     @Override
     public void exitObj_decl(MeldrLangParser.Obj_declContext ctx) 
     { 
-        objects.add(currentObject);
+        if(!currentProperties.contains("MODEL")) {
+            semanticError += "ERROR [LINE " +  ctx.start.getLine() +  "]: MODEL property is required for object " + currentObject.getName() + "!\n";
+        } else {
+            objects.add(currentObject);
+        }
 
         currentObject = null;
         currentProperties = null;
