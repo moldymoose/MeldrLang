@@ -186,40 +186,42 @@ Colors in Meldr can be set in three different ways, depending on how precise or 
 These are simple predefined color names you can type directly.
 
 | Color Name      | Example |
-| --------------- | ------- |
-| **BLACK**       | <span style="display:inline-block;width:40px;height:20px;background:#000;"></span> |
-| **WHITE**       | <span style="display:inline-block;width:40px;height:20px;background:#fff;border:1px solid #ccc;"></span> |
-| **RED**         | <span style="display:inline-block;width:40px;height:20px;background:#ff0000;"></span> |
-| **GREEN**       | <span style="display:inline-block;width:40px;height:20px;background:#00ff00;"></span> |
-| **BLUE**        | <span style="display:inline-block;width:40px;height:20px;background:#0000ff;"></span> |
-| **YELLOW**      | <span style="display:inline-block;width:40px;height:20px;background:#ffff00;"></span> |
-| **CYAN**        | <span style="display:inline-block;width:40px;height:20px;background:#00ffff;"></span> |
-| **MAGENTA**     | <span style="display:inline-block;width:40px;height:20px;background:#ff00ff;"></span> |
-| **ORANGE**      | <span style="display:inline-block;width:40px;height:20px;background:#ffa500;"></span> |
-| **PURPLE**      | <span style="display:inline-block;width:40px;height:20px;background:#800080;"></span> |
-| **PINK**        | <span style="display:inline-block;width:40px;height:20px;background:#ffc0cb;"></span> |
-| **BROWN**       | <span style="display:inline-block;width:40px;height:20px;background:#8b4513;"></span> |
-| **GRAY**        | <span style="display:inline-block;width:40px;height:20px;background:#808080;"></span> |
-| **LIGHTGRAY**   | <span style="display:inline-block;width:40px;height:20px;background:#d3d3d3;"></span> |
-| **DARKGRAY**    | <span style="display:inline-block;width:40px;height:20px;background:#404040;"></span> |
-| **NAVY**        | <span style="display:inline-block;width:40px;height:20px;background:#000080;"></span> |
-| **ROYALBLUE**   | <span style="display:inline-block;width:40px;height:20px;background:#4169e1;"></span> |
-| **SKYBLUE**     | <span style="display:inline-block;width:40px;height:20px;background:#87ceeb;"></span> |
-| **STEELBLUE**   | <span style="display:inline-block;width:40px;height:20px;background:#4682b4;"></span> |
-| **LIME**        | <span style="display:inline-block;width:40px;height:20px;background:#32cd32;"></span> |
-| **FORESTGREEN** | <span style="display:inline-block;width:40px;height:20px;background:#228b22;"></span> |
-| **SEAGREEN**    | <span style="display:inline-block;width:40px;height:20px;background:#2e8b57;"></span> |
-| **OLIVE**       | <span style="display:inline-block;width:40px;height:20px;background:#808000;"></span> |
-| **MAROON**      | <span style="display:inline-block;width:40px;height:20px;background:#800000;"></span> |
-| **CRIMSON**     | <span style="display:inline-block;width:40px;height:20px;background:#dc143c;"></span> |
-| **SALMON**      | <span style="display:inline-block;width:40px;height:20px;background:#fa8072;"></span> |
-| **CORAL**       | <span style="display:inline-block;width:40px;height:20px;background:#ff7f50;"></span> |
-| **VIOLET**      | <span style="display:inline-block;width:40px;height:20px;background:#ee82ee;"></span> |
-| **INDIGO**      | <span style="display:inline-block;width:40px;height:20px;background:#4b0082;"></span> |
-| **PLUM**        | <span style="display:inline-block;width:40px;height:20px;background:#dda0dd;"></span> |
-| **GOLD**        | <span style="display:inline-block;width:40px;height:20px;background:#ffd700;"></span> |
-| **KHAKI**       | <span style="display:inline-block;width:40px;height:20px;background:#f0e68c;"></span> |
-| **TAN**         | <span style="display:inline-block;width:40px;height:20px;background:#d2b48c;"></span> |
+|-----------------|---------|
+| **BLACK**       | $$\color{#000000}{\text{█████}}$$ |
+| **WHITE**       | $$\color{#ffffff}{\text{█████}}$$ |
+| **RED**         | $$\color{#ff0000}{\text{█████}}$$ |
+| **GREEN**       | $$\color{#00ff00}{\text{█████}}$$ |
+| **BLUE**        | $$\color{#0000ff}{\text{█████}}$$ |
+| **YELLOW**      | $$\color{#ffff00}{\text{█████}}$$ |
+| **CYAN**        | $$\color{#00ffff}{\text{█████}}$$ |
+| **MAGENTA**     | $$\color{#ff00ff}{\text{█████}}$$ |
+| **ORANGE**      | $$\color{#ffa500}{\text{█████}}$$ |
+| **PURPLE**      | $$\color{#800080}{\text{█████}}$$ |
+| **PINK**        | $$\color{#ffc0cb}{\text{█████}}$$ |
+| **BROWN**       | $$\color{#8b4513}{\text{█████}}$$ |
+| **GRAY**        | $$\color{#808080}{\text{█████}}$$ |
+| **LIGHTGRAY**   | $$\color{#d3d3d3}{\text{█████}}$$ |
+| **DARKGRAY**    | $$\color{#404040}{\text{█████}}$$ |
+| **NAVY**        | $$\color{#000080}{\text{█████}}$$ |
+| **ROYALBLUE**   | $$\color{#4169e1}{\text{█████}}$$ |
+| **SKYBLUE**     | $$\color{#87ceeb}{\text{█████}}$$ |
+| **STEELBLUE**   | $$\color{#4682b4}{\text{█████}}$$ |
+| **LIME**        | $$\color{#32cd32}{\text{█████}}$$ |
+| **FORESTGREEN** | $$\color{#228b22}{\text{█████}}$$ |
+| **SEAGREEN**    | $$\color{#2e8b57}{\text{█████}}$$ |
+| **OLIVE**       | $$\color{#808000}{\text{█████}}$$ |
+| **MAROON**      | $$\color{#800000}{\text{█████}}$$ |
+| **CRIMSON**     | $$\color{#dc143c}{\text{█████}}$$ |
+| **SALMON**      | $$\color{#fa8072}{\text{█████}}$$ |
+| **CORAL**       | $$\color{#ff7f50}{\text{█████}}$$ |
+| **VIOLET**      | $$\color{#ee82ee}{\text{█████}}$$ |
+| **INDIGO**      | $$\color{#4b0082}{\text{█████}}$$ |
+| **PLUM**        | $$\color{#dda0dd}{\text{█████}}$$ |
+| **GOLD**        | $$\color{#ffd700}{\text{█████}}$$ |
+| **KHAKI**       | $$\color{#f0e68c}{\text{█████}}$$ |
+| **TAN**         | $$\color{#d2b48c}{\text{█████}}$$ |
+
+
 
 ---
 
