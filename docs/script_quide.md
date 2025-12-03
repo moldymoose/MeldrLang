@@ -87,7 +87,7 @@ You can repeat as many objects as you like inside a scene, but each property can
 
 ### Model Types
 
-These define what 3D object is created. Below is a table of supported models. Images will appear here once added to the `/docs/img/models/` folder.
+These define what 3D object is created. Below is a table of supported models. 
 
 | Model Name | Image | Description |
 |------------|-------|-------------|
