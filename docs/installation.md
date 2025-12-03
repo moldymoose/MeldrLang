@@ -2,7 +2,7 @@
 
 ## Prerequisites
 
-- Blender (version 2.80 or later). Download: <https://www.blender.org/download/>
+- Blender (version 4.2 or later). Download: <https://www.blender.org/download/>
 - Java 8. Download: <https://www.java.com/en/download/manual.jsp>
   (or use an open alternative).
 - Make sure both are installed and working (e.g., run java -version in terminal to verify Java, open Blender to verify it launches).
