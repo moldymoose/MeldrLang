@@ -10,7 +10,11 @@ level: LEVEL INT;
 
 obj_decl: OBJECT IDENTIFIER objectProperty* END OBJECT;
 
-objectProperty: model_decl | color_decl | location_decl | dynamic_decl | size_decl | rotation_decl;
+objectProperty: animProperty | dynamic_decl | keyframe_decl;
+
+animProperty: model_decl | color_decl | location_decl | size_decl | rotation_decl;
+
+keyframe_decl: KEYFRAME INT animProperty END KEYFRAME;
 
 model_decl: MODEL '=' IDENTIFIER;
 color_decl: COLOR '=' colorValue;
@@ -52,6 +56,7 @@ DYNAMIC   : [Dd][Yy][Nn][Aa][Mm][Ii][Cc];
 SIZE      : [Ss][Ii][Zz][Ee];
 TRUE      : [Tt][Rr][Uu][Ee];
 FALSE     : [Ff][Aa][Ll][Ss][Ee];
+KEYFRAME  : [Kk][Ee][Yy][Ff][Rr][Aa][Mm][Ee];
 
 
 X_DEC: ('X' | 'x') WS? (':' | '=');
