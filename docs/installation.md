@@ -9,7 +9,7 @@
 
 ## Download the addon
 
-- Visit the [Releases](https://github.com/KAHANDA-LAB/Group3-F25/releases) page of this repository.
+- Visit the [Releases](https://github.com/moldymoose/MeldrLang/releases) page of this repository.
 - Find the latest version and download the add-on zip file.
 
 ## Install into Blender
