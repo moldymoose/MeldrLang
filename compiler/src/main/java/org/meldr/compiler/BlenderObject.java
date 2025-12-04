@@ -1,10 +1,13 @@
 package org.meldr.compiler;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class BlenderObject
 {
 
-    private String location = "(0, 0, 0)";
     private String modelType = "EMPTY";
+    private String location = "(0, 0, 0)";
     private String modelColor = "(1.0, 1.0, 1.0, 0.0)";
     private String size = "1.0";
     private String xRot = "0";
@@ -13,9 +16,15 @@ public class BlenderObject
     private boolean dynamicPhysicsEnabled = false;
     private final String name;
 
+    public final List<Keyframe> keyframes = new ArrayList<>();
+
     public BlenderObject(String name)
     {
         this.name = name;
+    }
+
+    public void addKeyframe(Keyframe keyframe) {
+        this.keyframes.add(keyframe);
     }
 
     public String getName()
@@ -76,16 +85,12 @@ public class BlenderObject
             ")\n" +
             "\n" +
             "obj = bpy.context.selected_objects[0]\n" +
-            "bpy.ops.object.empty_add()\n" +
-            "parent = bpy.context.selected_objects[0]\n" +
             "obj.name = \"%s\"\n" +
-            "parent.name = \"%s\"\n" +
-            "obj.parent = parent\n" +
-            "parent.location = %s\n" +
-            "parent.scale *= %s\n" +
-            "parent.rotation_euler[0] += math.radians(%s)\n" +
-            "parent.rotation_euler[1] += math.radians(%s)\n" +
-            "parent.rotation_euler[2] += math.radians(%s)\n" +
+            "obj.location = %s\n" +
+            "obj.scale.x = obj.scale.y = obj.scale.z = %s\n" +
+            "obj.rotation_euler[0] += math.radians(%s)\n" +
+            "obj.rotation_euler[1] += math.radians(%s)\n" +
+            "obj.rotation_euler[2] += math.radians(%s)\n" +
             "\n" +
             "mat = obj.data.materials[0]\n" +
             "new_mat = mat.copy()\n" +
@@ -111,12 +116,23 @@ public class BlenderObject
             "    links.new(old_color_output, mix.inputs[1])\n" +
             "\n" +
             "links.new(mix.outputs[0], bsdf.inputs[\"Base Color\"])\n",
-            this.modelType, this.name, this.name, this.location, this.size, this.xRot, this.yRot, this.zRot, this.modelColor
+            this.modelType, this.name, this.location, this.size, this.xRot, this.yRot, this.zRot, this.modelColor
         );
 
         if(!dynamicPhysicsEnabled)
         {
             code += "obj.rigid_body.type = 'PASSIVE'\n";
+        }
+
+        if(!keyframes.isEmpty()) {
+            code += "obj.keyframe_insert(\"location\", frame = 0)\n" +
+                    "mix.inputs[2].keyframe_insert(\"default_value\", frame = 0)\n" +
+                    "obj.keyframe_insert(\"rotation_euler\", frame = 0)\n" +
+                    "obj.keyframe_insert(\"scale\", frame = 0)\n" +
+                    "obj.rigid_body.kinematic = True\n";
+        }
+        for(Keyframe key : keyframes) {
+            code += key.getPythonCode();
         }
 
         return code;

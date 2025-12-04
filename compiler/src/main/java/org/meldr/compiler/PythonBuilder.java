@@ -11,6 +11,8 @@ public class PythonBuilder extends MeldrLangBaseListener
     private BlenderObject currentObject;
     private String semanticError = "";
 
+    private Keyframe currentKeyframe;
+
     // Set will contain objects properties for identifying duplicates
     private Set<String> currentProperties;
 
@@ -73,21 +75,32 @@ public class PythonBuilder extends MeldrLangBaseListener
     }
 
     @Override
-    public void enterColorValue(MeldrLangParser.ColorValueContext ctx) {
+    public void enterKeyframe_decl(MeldrLangParser.Keyframe_declContext ctx) {
+        int frameNumber = Integer.parseInt(ctx.INT().getText());
+        currentKeyframe = new Keyframe(frameNumber);
+    }
+
+    @Override
+    public void exitKeyframe_decl(MeldrLangParser.Keyframe_declContext ctx) {
+        currentObject.addKeyframe(currentKeyframe);
+    }
+
+    @Override
+    public void enterColor_decl(MeldrLangParser.Color_declContext ctx) {
 
         String rColor, gColor, bColor;
-        if(ctx.getChild(0) instanceof MeldrLangParser.RgbContext) {
-            rColor = ctx.rgb().r_percent().percent().getText();
-            gColor = ctx.rgb().g_percent().percent().getText();
-            bColor = ctx.rgb().b_percent().percent().getText();
+        if(ctx.colorValue().rgb() != null) {
+            rColor = ctx.colorValue().rgb().r_percent().percent().getText();
+            gColor = ctx.colorValue().rgb().g_percent().percent().getText();
+            bColor = ctx.colorValue().rgb().b_percent().percent().getText();
 
             rColor = String.valueOf(Double.parseDouble(rColor) / 100);
             gColor = String.valueOf(Double.parseDouble(gColor) / 100);
             bColor = String.valueOf(Double.parseDouble(bColor) / 100);
 
             currentObject.setModelColor('(' + rColor + ',' + gColor + ',' + bColor + ", 1.0)");
-        } else if (ctx.getChild(0) instanceof MeldrLangParser.HexColorContext) {
-            String hex = ctx.hexColor().HEXVALUE().getText();
+        } else if (ctx.colorValue().hexColor() != null) {
+            String hex = ctx.colorValue().hexColor().HEXVALUE().getText();
 
             // Parse R, G, B components from hex
             int r = Integer.parseInt(hex.substring(0, 2), 16);
@@ -101,7 +114,7 @@ public class PythonBuilder extends MeldrLangBaseListener
 
             currentObject.setModelColor('(' + rColor + ',' + gColor + ',' + bColor + ", 1.0)");
         } else {
-            String identifier = ctx.IDENTIFIER().getText();
+            String identifier = ctx.colorValue().IDENTIFIER().getText();
             if (PropertyTypes.colorTypeExists(identifier)) {
                 currentObject.setModelColor(PropertyTypes.getColorFromType(identifier));
             } else {
@@ -141,6 +154,70 @@ public class PythonBuilder extends MeldrLangBaseListener
     @Override
     public void enterSize_decl(MeldrLangParser.Size_declContext ctx) {
         currentObject.setSize(ctx.number().getChild(0).getText());
+    }
+
+    @Override
+    public void enterSize_key(MeldrLangParser.Size_keyContext ctx) {
+        currentKeyframe.setSize(ctx.number().getChild(0).getText());
+    }
+
+    @Override
+    public void enterColor_key(MeldrLangParser.Color_keyContext ctx) {
+
+        String rColor, gColor, bColor;
+        if(ctx.colorValue().rgb() != null) {
+            rColor = ctx.colorValue().rgb().r_percent().percent().getText();
+            gColor = ctx.colorValue().rgb().g_percent().percent().getText();
+            bColor = ctx.colorValue().rgb().b_percent().percent().getText();
+
+            rColor = String.valueOf(Double.parseDouble(rColor) / 100);
+            gColor = String.valueOf(Double.parseDouble(gColor) / 100);
+            bColor = String.valueOf(Double.parseDouble(bColor) / 100);
+
+            currentKeyframe.setModelColor('(' + rColor + ',' + gColor + ',' + bColor + ", 1.0)");
+        } else if (ctx.colorValue().hexColor() != null) {
+            String hex = ctx.colorValue().hexColor().HEXVALUE().getText();
+
+            // Parse R, G, B components from hex
+            int r = Integer.parseInt(hex.substring(0, 2), 16);
+            int g = Integer.parseInt(hex.substring(2, 4), 16);
+            int b = Integer.parseInt(hex.substring(4, 6), 16);
+
+            // Convert to 0.0 - 1.0 floats and format as strings
+            rColor = String.format("%.4f", r / 255.0f);
+            gColor = String.format("%.4f", g / 255.0f);
+            bColor = String.format("%.4f", b / 255.0f);
+
+            currentKeyframe.setModelColor('(' + rColor + ',' + gColor + ',' + bColor + ", 1.0)");
+        } else {
+            String identifier = ctx.colorValue().IDENTIFIER().getText();
+            if (PropertyTypes.colorTypeExists(identifier)) {
+                currentKeyframe.setModelColor(PropertyTypes.getColorFromType(identifier));
+            } else {
+                semanticError += "ERROR [LINE " +  ctx.start.getLine() +  "]: " + identifier + " is not a valid color!\n";
+            }
+        }
+    }
+
+    @Override
+    public void enterRotation_key(MeldrLangParser.Rotation_keyContext ctx) {
+        if(ctx.number() != null) {
+            currentKeyframe.setzRot(ctx.number().getChild(0).getText());
+        } else if (ctx.vector() != null) {
+            currentKeyframe.setxRot(ctx.vector().x_number().number().getChild(0).getText());
+            currentKeyframe.setyRot(ctx.vector().y_number().number().getChild(0).getText());
+            currentKeyframe.setzRot(ctx.vector().z_number().number().getChild(0).getText());
+        }
+    }
+
+    @Override
+    public void enterLocation_key(MeldrLangParser.Location_keyContext ctx)
+    {
+        String xVal = ctx.vector().x_number().number().getChild(0).getText();
+        String yVal = ctx.vector().y_number().number().getChild(0).getText();
+        String zVal = ctx.vector().z_number().number().getChild(0).getText();
+
+        currentKeyframe.setLocation("(" + xVal + ", " + yVal + ", " + zVal + ")");
     }
 
     @Override

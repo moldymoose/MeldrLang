@@ -1,0 +1,31 @@
+SCENE golfSwing
+    OBJECT golfclub
+        MODEL = golf_club
+        COLOR = blue
+        -- default postion/facing --
+        LOCATION = (0, 0, 4) -- golf club needs to be 4 units raised from surface
+        ROTATION = 0 -- face the golf club any direction you like
+        
+        -- animation --
+        KEYFRAME 0  -- start
+            rotation = (0, 0, 0)
+        END KEYFRAME
+        KEYFRAME 30 -- wind up
+            rotation = (100, 0, 0)
+            color = red
+        END KEYFRAME
+        KEYFRAME 40 -- swing!
+            ROTATION = (-175, 0, 0)
+            COLOR = green
+        END KEYFRAME
+        
+    END OBJECT
+    
+    OBJECT ball
+        LOCATION = (0, 0, 1)
+        MODEL = golf_ball
+        COLOR = orange
+        
+        DYNAMIC = true
+    END OBJECT  
+END SCENE

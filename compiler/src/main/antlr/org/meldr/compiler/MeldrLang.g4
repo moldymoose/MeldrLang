@@ -8,13 +8,20 @@ scene: SCENE IDENTIFIER level? obj_decl+ END SCENE;
 
 level: LEVEL INT;
 
-obj_decl: OBJECT IDENTIFIER objectProperty* END OBJECT;
+obj_decl: OBJECT IDENTIFIER obj_component* END OBJECT;
 
-objectProperty: animProperty | dynamic_decl | keyframe_decl;
+obj_component: objectProperty | keyframe_decl;
 
-animProperty: model_decl | color_decl | location_decl | size_decl | rotation_decl;
+objectProperty: model_decl | color_decl | location_decl | size_decl | rotation_decl | dynamic_decl;
 
-keyframe_decl: KEYFRAME INT animProperty END KEYFRAME;
+animProperty: color_key | location_key | size_key | rotation_key ;
+
+keyframe_decl: KEYFRAME INT animProperty* END KEYFRAME;
+
+color_key: COLOR '=' colorValue;
+location_key: LOCATION '=' vector;
+size_key: SIZE '=' number;
+rotation_key: ROTATION '=' (number | vector);
 
 model_decl: MODEL '=' IDENTIFIER;
 color_decl: COLOR '=' colorValue;

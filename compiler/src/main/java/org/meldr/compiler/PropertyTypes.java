@@ -6,7 +6,7 @@ import java.util.Map;
 import java.util.Set;
 
 public class PropertyTypes {
-    public static final int MAX_LEVEL = 2;
+    public static final int MAX_LEVEL = 3;
     public static final int MIN_LEVEL = 0;
     private static final Set<String> modelTypes = new HashSet<>();
     private static  final Map<String, String> colorTypes = new HashMap<>();
@@ -22,6 +22,8 @@ public class PropertyTypes {
         modelTypes.add("CYLINDER");
         modelTypes.add("GOLF_CLUB");
         modelTypes.add("RAMP");
+        modelTypes.add("TORUS");
+        modelTypes.add("CONE");
 
         // Default Colors
         colorTypes.put("BLACK", "(0.0, 0.0, 0.0, 1.0)");
